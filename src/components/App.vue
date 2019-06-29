@@ -1,15 +1,16 @@
 <template>
   <div class="app">
-    Vue Application
+    <boss-shedule/>
   </div>
 </template>
  
 <script>
+import BossShedule from './BossShedule.vue'
 
 export default {
   name: 'app',
   components: {
-
+    BossShedule
   },
   data () {
     return {
