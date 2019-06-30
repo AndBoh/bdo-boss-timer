@@ -1,16 +1,16 @@
 <template>
   <div class="app">
-    <boss-shedule/>
+    <boss-timer/>
   </div>
 </template>
  
 <script>
-import BossShedule from './BossShedule.vue'
+import BossTimer from './BossTimer.vue'
 
 export default {
   name: 'app',
   components: {
-    BossShedule
+    BossTimer
   },
   data () {
     return {

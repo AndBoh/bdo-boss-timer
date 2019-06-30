@@ -3,7 +3,8 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const MS_Per_Hour = 1000*60*60;
+const MS_Per_Minute = 1000*60;
+const MS_Per_Hour = MS_Per_Minute*60;
 const MS_Per_Day = MS_Per_Hour*24;
 
 function getWeekBegin(weekOffset = 0) {
