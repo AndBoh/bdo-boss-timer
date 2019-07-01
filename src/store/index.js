@@ -17,11 +17,12 @@ function getWeekBegin(weekOffset = 0) {
 export const store = new Vuex.Store({
   state: {
     bossShedule: [],
-    time: null
+    time: null,
+    activeBossId: null
   },
   getters: {
-    bossRespawnList(state) {
-      let bossRespawnList = [];
+    bossesInfo(state) {
+      let bossesInfo = [];
            let thisWeekBegin = getWeekBegin();
            let nextWeekBegin = getWeekBegin(1);
            state.bossShedule.forEach(boss => {
@@ -35,20 +36,27 @@ export const store = new Vuex.Store({
                    return (resp > +state.time);
                });
 
-               bossRespawnList.push({
+               bossesInfo.push({
                    bossId: boss.bossId,
+                   bossName: boss.bossName,
                    bossRespawn: Math.min(...bossRespawns)-state.time
                });
            });
-           return bossRespawnList;
+           return bossesInfo;
     }
   },
   mutations: {
     SET_BOSS_SHEDULE(state, bossShedule) {
       state.bossShedule = bossShedule
+      if (state.bossShedule && (state.activeBossId === null)) {
+        state.activeBossId = 0;
+      }
     },
     UPDATE_TIME(state) {
       state.time = Date.now();
+    },
+    SET_ACTIVE_BOSS_ID(state, id) {
+      state.activeBossId = id;
     }
   },
   actions: {
@@ -58,6 +66,7 @@ export const store = new Vuex.Store({
       shedule = [
         {
             bossId: 0,
+            bossName: 'Kzarka',
             bossRespawn: [
                 {
                     day: 1,
@@ -71,6 +80,7 @@ export const store = new Vuex.Store({
         },
         {
             bossId: 1,
+            bossName: 'Offin',
             bossRespawn: [
                 {
                     day: 2,

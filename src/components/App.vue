@@ -24,5 +24,8 @@ export default {
   * {
     box-sizing: border-box;
   }
+  .app {
+    overflow: hidden;
+  }
   
 </style>

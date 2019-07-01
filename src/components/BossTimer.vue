@@ -1,7 +1,27 @@
 <template>
     <div class="boss-timer">
-        {{new Date(time)}}
-        {{timeToString(bossRespawnList[0].bossRespawn)}}
+        <Header class="header">
+            Header
+        </Header>
+        <Section class="main-section">
+            <div class="bosses-list">
+                <bosses-list-item 
+                v-for="boss in bossesInfo"
+                :bossId="boss.bossId"
+                :bossName="boss.bossName"
+                :bossRespawn="timeToString(boss.bossRespawn)"
+                :key="boss.bossId"
+                @click.native="SET_ACTIVE_BOSS_ID(boss.bossId)"
+                />
+                <!-- {{bossesInfo[0].bossName+' - '+timeToString(bossesInfo[0].bossRespawn)}} -->
+            </div>
+            <div class="boss-info">
+                {{activeBossId}}
+            </div>
+        </Section>
+        <Footer class="footer">
+            Footer
+        </Footer>
     </div>
 </template>
 
@@ -14,11 +34,13 @@ const MS_Per_Day = MS_Per_Hour*24;
 import {mapGetters, mapState, mapActions, mapMutations} from 'vuex';
 import { setInterval } from 'timers';
 
+import BossesListItem from './BossesListItem.vue'
+
 export default {
    name: 'BossTimer',
    props: [''],
    components: {
-
+       BossesListItem
    },
    data () {
        return{
@@ -27,11 +49,12 @@ export default {
    },
    computed: {
        ...mapGetters([
-           'bossRespawnList'
+           'bossesInfo'
        ]),
        ...mapState([
            'bossShedule',
-           'time'
+           'time',
+           'activeBossId'
        ]),
    },
    methods: {
@@ -39,7 +62,8 @@ export default {
            'loadBossShedule'
        ]),
        ...mapMutations([
-           'UPDATE_TIME'
+           'UPDATE_TIME',
+           'SET_ACTIVE_BOSS_ID'
        ]),
 
        startTimer() {
@@ -49,13 +73,13 @@ export default {
        },
 
        timeToString(time) {
-           let days = Math.floor(time/MS_Per_Day);
+           let days = ~~(time/MS_Per_Day);
            time -= days*MS_Per_Day;
-           let hours = Math.floor(time/MS_Per_Hour);
+           let hours = ~~(time/MS_Per_Hour);
            time -= hours*MS_Per_Hour;
-           let minutes = Math.floor(time/MS_Per_Minute);
+           let minutes = ~~(time/MS_Per_Minute);
            time -= minutes*MS_Per_Minute;
-           let seconds = Math.floor(time/1000);
+           let seconds = ~~(time/1000);
            let result = '';
            if (days) {
                result += days+'д ';
@@ -87,5 +111,43 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.boss-timer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 600px) {
+        height: 200vh;
+    }
+    
+}
 
+.header {
+    height: 50px;
+}
+
+.footer {
+    height: 50px;
+}
+
+.main-section {
+    flex-grow: 1;
+    display: flex;
+    @media (max-width: 600px) {
+        flex-direction: column
+    }
+}
+
+.bosses-list {
+    flex-grow: 1;
+    background-color: #aaa;
+}
+
+.boss-info {
+    flex-grow: 3;
+    background-color: #555;
+    @media (max-width: 600px) {
+        flex-grow: 1;
+    }
+}
 </style>
