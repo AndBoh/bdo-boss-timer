@@ -4,7 +4,6 @@
             <on-off-switch 
             :bossId="bossId"
             @click.native.stop
-            v-model="alertOn"
             />
         </div>
 </template>
@@ -26,21 +25,16 @@ export default {
    },
    data () {
        return{
-           alertOn: true
+
        }
    },
    computed: {
    },
    methods: {
-       ...mapMutations([
-           'SET_BOSS_ALERT'
-       ])
+       ...mapMutations([])
    },
    watch: {
-       alertOn() {
-           this.SET_BOSS_ALERT({bossId:this.bossId, alertOn: this.alertOn})
-        // console.log("bossId"+this.bossId+"alertOn"+this.alertOn)
-       }
+
    },
 }
 </script>

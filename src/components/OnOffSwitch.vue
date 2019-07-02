@@ -1,6 +1,6 @@
 <template>
     <div class="onoffswitch">
-        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" :id="'myonoffswitch'+bossId" v-model="checked" v-bind="$attrs" @change="$emit('input', checked)">
+        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" :id="'myonoffswitch'+bossId" v-model="checked" @change="change()">
         <label class="onoffswitch-label" :for="'myonoffswitch'+bossId">
             <span class="onoffswitch-inner"></span>
             <span class="onoffswitch-switch"></span>
@@ -29,11 +29,28 @@ export default {
    },
    methods: {
        ...mapActions([]),
-       ...mapMutations([]),
+       ...mapMutations([
+           'SET_BOSS_ALERT'
+       ]),
+       change() {
+           this.$emit('input', this.checked);
+           this.SET_BOSS_ALERT({bossId:this.bossId, alertOn: this.checked})
+           localStorage.setItem('alertBoss'+this.bossId,this.checked);
+       },
+       loadAlertState() {
+            let loadedAlert = localStorage.getItem('alertBoss'+this.bossId);
+            if (loadedAlert === 'false') {
+                this.checked = false;
+                this.SET_BOSS_ALERT({bossId:this.bossId, alertOn: this.checked})
+            }
+       }
    },
    watch: {
 
    },
+   mounted() {
+       this.loadAlertState();
+   }
 }
 </script>
 

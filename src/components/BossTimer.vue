@@ -146,7 +146,8 @@ export default {
        ...mapMutations([
            'UPDATE_TIME',
            'SET_ACTIVE_BOSS_ID',
-           'SET_MIN_BEFORE_ALERT'
+           'SET_MIN_BEFORE_ALERT',
+           'LOAD_MIN_BEFORE_ALERT'
        ]),
 
        startTimer() {
@@ -204,6 +205,7 @@ export default {
    },
    mounted() {   
     this.loadBossShedule();
+    this.LOAD_MIN_BEFORE_ALERT();
     this.UPDATE_TIME();
     this.loadAlert('assets/sound/sound.mp3');
     this.startTimer();

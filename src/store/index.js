@@ -52,6 +52,12 @@ export const store = new Vuex.Store({
     SET_BOSS_SHEDULE(state, bossShedule) {
       state.bossShedule = bossShedule
     },
+    LOAD_MIN_BEFORE_ALERT(state) {
+      let min = localStorage.getItem('minBeforeAlert');
+      if (min) {
+        state.minBeforeAlert = min;
+      }
+    },
     UPDATE_TIME(state) {
       state.time = Date.now();
     },
@@ -66,6 +72,7 @@ export const store = new Vuex.Store({
     SET_MIN_BEFORE_ALERT(state, min) {
       if ((min >= 0) && (min <= 60)) {
         state.minBeforeAlert = min;
+        localStorage.setItem('minBeforeAlert', min)
       }
     }
   },
