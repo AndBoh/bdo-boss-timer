@@ -41,6 +41,7 @@ export const store = new Vuex.Store({
                    bossId: boss.bossId,
                    bossName: boss.bossName,
                    bossAlertOn: boss.alertOn,
+                   bossInTable: boss.inTable,
                    bossRespawn: Math.min(...bossRespawns)-state.time
                });
            });
@@ -99,11 +100,11 @@ export const store = new Vuex.Store({
             bossRespawn: [
                 {
                     day: 2,
-                    hour: 18,
-                    min: 18
+                    hour: 20,
+                    min: 31
                 },
                 {
-                    day: 7,
+                    day: 5,
                     hour: 20,
                     min: 0
                 }

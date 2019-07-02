@@ -46,8 +46,5 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.bosses-list-item {
-    border: 1px solid red;
-    cursor: pointer;
-}
+
 </style>
