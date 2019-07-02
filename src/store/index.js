@@ -40,6 +40,7 @@ export const store = new Vuex.Store({
                bossesInfo.push({
                    bossId: boss.bossId,
                    bossName: boss.bossName,
+                   bossAlertOn: boss.alertOn,
                    bossRespawn: Math.min(...bossRespawns)-state.time
                });
            });
@@ -58,6 +59,11 @@ export const store = new Vuex.Store({
     },
     SET_ACTIVE_BOSS_ID(state, id) {
       state.activeBossId = id;
+    },
+    SET_BOSS_ALERT(state, alertInfo) {
+      state.bossShedule.find((boss) => {
+        return boss.bossId == alertInfo.bossId
+      }).alertOn = alertInfo.alertOn;
     }
   },
   actions: {
@@ -69,6 +75,7 @@ export const store = new Vuex.Store({
             bossId: 0,
             bossName: 'Kzarka',
             inTable: true,
+            alertOn: true,
             bossRespawn: [
                 {
                     day: 1,
@@ -86,11 +93,12 @@ export const store = new Vuex.Store({
             bossId: 1,
             bossName: 'Offin',
             inTable: true,
+            alertOn: true,
             bossRespawn: [
                 {
                     day: 2,
-                    hour: 15,
-                    min: 39
+                    hour: 17,
+                    min: 20
                 },
                 {
                     day: 7,

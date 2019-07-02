@@ -79,7 +79,7 @@ export default {
        checkRespawn() {
            if (this.bossesInfo.some((boss) => {
                let t = boss.bossRespawn - (MS_Per_Minute*this.minBeforeAlert);
-               return (t <= 1000) && (t > 0)
+               return (t <= 1000) && (t > 0) && (boss.bossAlertOn)
            })) {
                this.playAlert();
            }
