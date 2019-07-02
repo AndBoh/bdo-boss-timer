@@ -18,7 +18,8 @@ export const store = new Vuex.Store({
   state: {
     bossShedule: [],
     time: null,
-    activeBossId: null
+    activeBossId: null,
+    minBeforeAlert: 1
   },
   getters: {
     bossesInfo(state) {
@@ -28,8 +29,8 @@ export const store = new Vuex.Store({
            state.bossShedule.forEach(boss => {
                let bossRespawns = [];
                boss.bossRespawn.forEach(resp => {
-                   bossRespawns.push(+thisWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour);
-                   bossRespawns.push(+nextWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour);
+                   bossRespawns.push(+thisWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour+resp.min*MS_Per_Minute);
+                   bossRespawns.push(+nextWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour+resp.min*MS_Per_Minute);
                });
                
                bossRespawns = bossRespawns.filter((resp) => {
@@ -67,28 +68,34 @@ export const store = new Vuex.Store({
         {
             bossId: 0,
             bossName: 'Kzarka',
+            inTable: true,
             bossRespawn: [
                 {
                     day: 1,
-                    hour: 13
+                    hour: 13,
+                    min: 0,
                 },
                 {
                     day: 3,
-                    hour: 20
+                    hour: 20,
+                    min: 0
                 }
             ]
         },
         {
             bossId: 1,
             bossName: 'Offin',
+            inTable: true,
             bossRespawn: [
                 {
                     day: 2,
-                    hour: 15
+                    hour: 15,
+                    min: 39
                 },
                 {
                     day: 7,
-                    hour: 20
+                    hour: 20,
+                    min: 0
                 }
             ]
         }

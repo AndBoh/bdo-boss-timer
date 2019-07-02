@@ -1,7 +1,7 @@
 <template>
-    <div class="bosses-list-item">
-        {{bossName}} - {{bossRespawn}}
-    </div>
+        <div class="bosses-list-item">
+            {{bossName}} - {{bossRespawn}}
+        </div>
 </template>
 
 <script>

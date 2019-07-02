@@ -11,11 +11,12 @@
                 :bossName="boss.bossName"
                 :bossRespawn="timeToString(boss.bossRespawn)"
                 :key="boss.bossId"
-                @click.native="SET_ACTIVE_BOSS_ID(boss.bossId)"
+                @click.native="SET_ACTIVE_BOSS_ID(boss.bossId); 
+                               $refs.info.scrollIntoView();"
                 />
-                <!-- {{bossesInfo[0].bossName+' - '+timeToString(bossesInfo[0].bossRespawn)}} -->
+                
             </div>
-            <div class="boss-info">
+            <div class="boss-info" ref="info">
                 {{activeBossId}}
             </div>
         </Section>
@@ -44,7 +45,8 @@ export default {
    },
    data () {
        return{
-           timer: null
+           timer: null,
+           alert: null
        }
    },
    computed: {
@@ -54,7 +56,8 @@ export default {
        ...mapState([
            'bossShedule',
            'time',
-           'activeBossId'
+           'activeBossId',
+           'minBeforeAlert'
        ]),
    },
    methods: {
@@ -69,7 +72,17 @@ export default {
        startTimer() {
         this.timer = setInterval(() => {
             this.UPDATE_TIME();
+            this.checkRespawn();
         }, 1000);
+       },
+
+       checkRespawn() {
+           if (this.bossesInfo.some((boss) => {
+               let t = boss.bossRespawn - (MS_Per_Minute*this.minBeforeAlert);
+               return (t <= 1000) && (t > 0)
+           })) {
+               this.playAlert();
+           }
        },
 
        timeToString(time) {
@@ -96,6 +109,14 @@ export default {
            }
            result += seconds+'с';
            return result;
+       },
+
+       loadAlert(fileName) {
+           this.alert = new Audio(fileName);
+       },
+
+       playAlert() {
+           this.alert.play();
        }
               
    },
@@ -105,6 +126,7 @@ export default {
    mounted() {   
     this.loadBossShedule();
     this.UPDATE_TIME();
+    this.loadAlert('assets/sound/sound.mp3');
     this.startTimer();
    }
 }
@@ -133,21 +155,30 @@ export default {
 .main-section {
     flex-grow: 1;
     display: flex;
+    position: relative;
     @media (max-width: 600px) {
         flex-direction: column
     }
 }
 
 .bosses-list {
+    width: 35%;
     flex-grow: 1;
     background-color: #aaa;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    @media (max-width: 600px) {
+        width: 100%;
+    }
 }
 
 .boss-info {
-    flex-grow: 3;
+    width: 65%;
+    flex-grow: 1;
     background-color: #555;
     @media (max-width: 600px) {
-        flex-grow: 1;
+        width: 100%;
     }
 }
 </style>

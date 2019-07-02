@@ -31,6 +31,18 @@ let conf = {
                 ],
             },
             {
+                test: /\.mp3$/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: 'assets/sound'
+                    },
+                  },
+                ],
+            },
+            {
                 test: /\.js$/,
                 use: {
                     loader: 'babel-loader',
