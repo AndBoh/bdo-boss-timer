@@ -50,9 +50,6 @@ export const store = new Vuex.Store({
   mutations: {
     SET_BOSS_SHEDULE(state, bossShedule) {
       state.bossShedule = bossShedule
-      if (state.bossShedule && (state.activeBossId === null)) {
-        state.activeBossId = 0;
-      }
     },
     UPDATE_TIME(state) {
       state.time = Date.now();
@@ -64,6 +61,11 @@ export const store = new Vuex.Store({
       state.bossShedule.find((boss) => {
         return boss.bossId == alertInfo.bossId
       }).alertOn = alertInfo.alertOn;
+    },
+    SET_MIN_BEFORE_ALERT(state, min) {
+      if ((min >= 0) && (min <= 60)) {
+        state.minBeforeAlert = min;
+      }
     }
   },
   actions: {
@@ -97,8 +99,8 @@ export const store = new Vuex.Store({
             bossRespawn: [
                 {
                     day: 2,
-                    hour: 17,
-                    min: 20
+                    hour: 18,
+                    min: 18
                 },
                 {
                     day: 7,

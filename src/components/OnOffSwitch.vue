@@ -65,6 +65,7 @@ export default {
 }
 .onoffswitch-inner:after {
     content: "🔇";
+    padding-top: 1px;
     padding-right: 10px;
     background-color: #EEEEEE; color: #999999;
     text-align: right;

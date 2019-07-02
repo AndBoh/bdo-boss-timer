@@ -1,12 +1,25 @@
 <template>
     <div class="boss-timer">
         <Header class="header">
-            Header
+            <div class="min-before-alert">
+                <button
+                @click="SET_MIN_BEFORE_ALERT(minBeforeAlert-1)"
+                >
+                    -
+                </button>
+                <input type="text" :value="minBeforeAlert" disabled/>
+                <button
+                @click="SET_MIN_BEFORE_ALERT(minBeforeAlert+1)"
+                >
+                    +
+                </button>
+            </div>
         </Header>
         <Section class="main-section">
             <div class="bosses-list">
+                <transition-group name="flip-list" class="flip-list" tag="div">
                 <bosses-list-item 
-                v-for="boss in bossesInfo"
+                v-for="boss in sortedBossesbyRespawn"
                 :bossId="boss.bossId"
                 :bossName="boss.bossName"
                 :bossRespawn="timeToString(boss.bossRespawn)"
@@ -14,10 +27,15 @@
                 @click.native="SET_ACTIVE_BOSS_ID(boss.bossId); 
                                $refs.info.scrollIntoView();"
                 />
-                
+                </transition-group>
             </div>
-            <div class="boss-info" ref="info">
-                {{activeBossId}}
+            <div class="boss-info-wrapper" ref="info">
+                <div class="bosses-table" v-if="activeBossId === null">
+                    Table
+                </div>
+                <div class="boss-info" v-else>
+                    {{activeBossId}}
+                </div>
             </div>
         </Section>
         <Footer class="footer">
@@ -59,6 +77,15 @@ export default {
            'activeBossId',
            'minBeforeAlert'
        ]),
+       sortedBossesbyRespawn() {
+           return this.bossesInfo.sort(function(boss1,boss2){
+               if (boss1.bossRespawn > boss2.bossRespawn) {
+                   return 1
+               } else {
+                   return -1
+               }
+           })
+       }
    },
    methods: {
        ...mapActions([
@@ -66,7 +93,8 @@ export default {
        ]),
        ...mapMutations([
            'UPDATE_TIME',
-           'SET_ACTIVE_BOSS_ID'
+           'SET_ACTIVE_BOSS_ID',
+           'SET_MIN_BEFORE_ALERT'
        ]),
 
        startTimer() {
@@ -165,20 +193,28 @@ export default {
     width: 35%;
     flex-grow: 1;
     background-color: #aaa;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
     @media (max-width: 600px) {
         width: 100%;
     }
 }
 
-.boss-info {
+.boss-info-wrapper {
     width: 65%;
     flex-grow: 1;
     background-color: #555;
     @media (max-width: 600px) {
         width: 100%;
     }
+}
+
+.flip-list {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.flip-list-move {
+  transition: transform 1s;
 }
 </style>
