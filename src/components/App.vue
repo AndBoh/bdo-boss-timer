@@ -1,31 +1,28 @@
 <template>
   <div class="app">
-    <boss-timer/>
+    <boss-timer />
   </div>
 </template>
  
 <script>
-import BossTimer from './BossTimer.vue'
+import BossTimer from "./BossTimer.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     BossTimer
   },
-  data () {
-    return {
-      
-    }
+  data() {
+    return {};
   }
-}
+};
 </script>
  
 <style lang='scss'>
-  * {
-    box-sizing: border-box;
-  }
-  .app {
-    overflow: hidden;
-  }
-  
+* {
+  box-sizing: border-box;
+}
+.app {
+  overflow: hidden;
+}
 </style>
