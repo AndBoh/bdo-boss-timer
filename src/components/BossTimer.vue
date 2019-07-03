@@ -1,6 +1,6 @@
 <template>
   <div class="boss-timer">
-    <Header class="header">
+    <Header class="header" ref="header">
       <div class="min-before-alert">
         <button @click="SET_MIN_BEFORE_ALERT(minBeforeAlert-1)">-</button>
         <input type="text" 
@@ -39,6 +39,11 @@
       </div>
     </Section>
     <Footer class="footer">Footer</Footer>
+    <div class="btn-scroll-up" 
+        v-if="getPageScroll()" 
+        @click="$refs.header.scrollIntoView()">
+        ▲
+    </div>
   </div>
 </template>
 
@@ -181,6 +186,9 @@ export default {
 
     playAlert() {
       this.alert.play();
+    },
+    getPageScroll() {
+        return  window.scrollY;
     }
   },
   watch: {},
@@ -254,5 +262,19 @@ export default {
 
 .flip-list-move {
   transition: transform 1s;
+}
+
+.btn-scroll-up {
+    height: 80px;
+    width: 80px;
+    border-radius: 30px;
+    background-color: #aaa;
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 </style>
