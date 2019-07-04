@@ -35,7 +35,9 @@
         <div class="bosses-table" v-if="activeBossId === null">
           <table v-html="bossesTable"></table>
         </div>
-        <div class="boss-info" v-else>{{activeBossId}}</div>
+        <div class="boss-info" v-else>
+            {{activeBoss}}
+        </div>
       </div>
     </Section>
     <Footer class="footer">Footer</Footer>
@@ -81,6 +83,11 @@ export default {
           return -1;
         }
       });
+    },
+    activeBoss() {
+        return this.bossShedule.find((boss) => {
+            return boss.bossId === this.activeBossId;
+        })
     },
     respHours() {
       let hours = new Set();

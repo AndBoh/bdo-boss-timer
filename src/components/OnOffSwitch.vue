@@ -1,56 +1,36 @@
 <template>
   <div class="onoffswitch">
-    <input
-      type="checkbox"
-      name="onoffswitch"
-      class="onoffswitch-checkbox"
-      :id="'myonoffswitch'+bossId"
-      v-model="checked"
-      @change="change()"
-    />
-    <label class="onoffswitch-label" :for="'myonoffswitch'+bossId">
+    <label class="onoffswitch-label">
+      <input
+        type="checkbox"
+        class="onoffswitch-checkbox"
+        :checked="checked"
+        @change="change($event)"
+      />
       <span class="onoffswitch-inner"></span>
-      <span class="onoffswitch-switch"></span>
     </label>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
-
 export default {
   name: "OnOffSwitch",
-  props: ["bossId"],
-  inheritAttrs: false,
-  components: {},
-  data() {
-    return {
-      checked: true
-    };
+  model: {
+    prop: "checked",
+    event: "change"
   },
-  computed: {
-    ...mapGetters([]),
-    ...mapState([])
-  },
-  methods: {
-    ...mapActions([]),
-    ...mapMutations(["SET_BOSS_ALERT"]),
-    change() {
-      this.$emit("input", this.checked);
-      this.SET_BOSS_ALERT({ bossId: this.bossId, alertOn: this.checked });
-      localStorage.setItem("alertBoss" + this.bossId, this.checked);
-    },
-    loadAlertState() {
-      let loadedAlert = localStorage.getItem("alertBoss" + this.bossId);
-      if (loadedAlert === "false") {
-        this.checked = false;
-        this.SET_BOSS_ALERT({ bossId: this.bossId, alertOn: this.checked });
-      }
+  props: {
+    checked: {
+      default: false
     }
   },
-  watch: {},
-  mounted() {
-    this.loadAlertState();
+  data() {
+    return {};
+  },
+  methods: {
+    change(event) {
+      this.$emit("change", event.target.checked);
+    }
   }
 };
 </script>
@@ -58,7 +38,7 @@ export default {
 <style lang='scss' scoped>
 .onoffswitch {
   position: relative;
-  width: 62px;
+  width: 50px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -92,38 +72,21 @@ export default {
   font-family: Trebuchet, Arial, sans-serif;
   font-weight: bold;
   box-sizing: border-box;
+  text-align: center;
 }
 .onoffswitch-inner:before {
   content: "🔊";
-  padding-left: 10px;
   background-color: #34a7c1;
   color: #ffffff;
 }
 .onoffswitch-inner:after {
   content: "🔇";
   padding-top: 1px;
-  padding-right: 10px;
-  background-color: #eeeeee;
+  background-color: #eee;
   color: #999999;
-  text-align: right;
 }
-.onoffswitch-switch {
-  display: block;
-  width: 20px;
-  margin: 3px;
-  background: #ffffff;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 34px;
-  border: 2px solid #999999;
-  border-radius: 20px;
-  transition: all 0.3s ease-in 0s;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+
+.onoffswitch-checkbox:checked + .onoffswitch-inner {
   margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-  right: 0px;
 }
 </style>
