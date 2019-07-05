@@ -14,6 +14,32 @@ function getWeekBegin(weekOffset = 0) {
   return weekBegin;
 }
 
+function timeToString(time) {
+  let days = ~~(time / MS_Per_Day);
+  time -= days * MS_Per_Day;
+  let hours = ~~(time / MS_Per_Hour);
+  time -= hours * MS_Per_Hour;
+  let minutes = ~~(time / MS_Per_Minute);
+  time -= minutes * MS_Per_Minute;
+  let seconds = ~~(time / 1000);
+  let result = "";
+  if (days) {
+    result += days + "д ";
+  }
+  if (hours) {
+    result += hours + "ч ";
+  }
+  if (minutes < 10) {
+    result += "0";
+  }
+  result += minutes + "м ";
+  if (seconds < 10) {
+    result += "0";
+  }
+  result += seconds + "с";
+  return result;
+}
+
 export const store = new Vuex.Store({
   state: {
     bossShedule: [],
@@ -22,11 +48,15 @@ export const store = new Vuex.Store({
     minBeforeAlert: 1
   },
   getters: {
-    bossesInfo(state) {
-      let bossesInfo = [];
-           let thisWeekBegin = getWeekBegin();
-           let nextWeekBegin = getWeekBegin(1);
-           state.bossShedule.forEach(boss => {
+  },
+  mutations: {
+    SET_BOSS_SHEDULE(state, bossShedule) {
+      state.bossShedule = bossShedule
+    },
+    COUNT_TIME_TO_RESPAWN(state) {
+      let thisWeekBegin = getWeekBegin();
+      let nextWeekBegin = getWeekBegin(1);
+           state.bossShedule.forEach((boss, index) => {
                let bossRespawns = [];
                boss.bossRespawn.forEach(resp => {
                    bossRespawns.push(+thisWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour+resp.min*MS_Per_Minute);
@@ -36,21 +66,9 @@ export const store = new Vuex.Store({
                bossRespawns = bossRespawns.filter((resp) => {
                    return (resp > +state.time);
                });
-
-               bossesInfo.push({
-                   bossId: boss.bossId,
-                   bossName: boss.bossName,
-                   bossAlertOn: boss.alertOn,
-                   bossInTable: boss.inTable,
-                   bossRespawn: Math.min(...bossRespawns)-state.time
-               });
+               Vue.set(state.bossShedule[index],'timeToRespawn',Math.min(...bossRespawns)-state.time);
+               Vue.set(state.bossShedule[index],'timeToRespawnAsString',timeToString(Math.min(...bossRespawns)-state.time));
            });
-           return bossesInfo;
-    }
-  },
-  mutations: {
-    SET_BOSS_SHEDULE(state, bossShedule) {
-      state.bossShedule = bossShedule
     },
     LOAD_MIN_BEFORE_ALERT(state) {
       let min = localStorage.getItem('minBeforeAlert');

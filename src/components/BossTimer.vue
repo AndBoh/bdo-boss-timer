@@ -23,8 +23,6 @@
             class="bosses-list-btn"
             v-for="boss in sortedBossesbyRespawn"
             :bossId="boss.bossId"
-            :bossName="boss.bossName"
-            :bossRespawn="timeToString(boss.bossRespawn)"
             :key="boss.bossId"
             @click.native="SET_ACTIVE_BOSS_ID(boss.bossId); 
                             $refs.info.scrollIntoView();"
@@ -54,7 +52,7 @@ const MS_Per_Minute = 1000 * 60;
 const MS_Per_Hour = MS_Per_Minute * 60;
 const MS_Per_Day = MS_Per_Hour * 24;
 
-import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import { setInterval } from "timers";
 
 import BossesListItem from "./BossesListItem.vue";
@@ -73,11 +71,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["bossesInfo"]),
     ...mapState(["bossShedule", "time", "activeBossId", "minBeforeAlert"]),
     sortedBossesbyRespawn() {
-      return this.bossesInfo.sort(function(boss1, boss2) {
-        if (boss1.bossRespawn > boss2.bossRespawn) {
+      return this.bossShedule.sort(function(boss1, boss2) {
+        if (boss1.timeToRespawn > boss2.timeToRespawn) {
           return 1;
         } else {
           return -1;
@@ -140,51 +137,27 @@ export default {
       "UPDATE_TIME",
       "SET_ACTIVE_BOSS_ID",
       "SET_MIN_BEFORE_ALERT",
-      "LOAD_MIN_BEFORE_ALERT"
+      "LOAD_MIN_BEFORE_ALERT",
+      "COUNT_TIME_TO_RESPAWN"
     ]),
 
     startTimer() {
       this.timer = setInterval(() => {
         this.UPDATE_TIME();
+        this.COUNT_TIME_TO_RESPAWN();
         this.checkRespawn();
       }, 1000);
     },
 
     checkRespawn() {
       if (
-        this.bossesInfo.some(boss => {
-          let t = boss.bossRespawn - MS_Per_Minute * this.minBeforeAlert;
+        this.bossShedule.some(boss => {
+          let t = boss.timeToRespawn - MS_Per_Minute * this.minBeforeAlert;
           return t <= 1000 && t > 0 && boss.bossAlertOn;
         })
       ) {
         this.playAlert();
       }
-    },
-
-    timeToString(time) {
-      let days = ~~(time / MS_Per_Day);
-      time -= days * MS_Per_Day;
-      let hours = ~~(time / MS_Per_Hour);
-      time -= hours * MS_Per_Hour;
-      let minutes = ~~(time / MS_Per_Minute);
-      time -= minutes * MS_Per_Minute;
-      let seconds = ~~(time / 1000);
-      let result = "";
-      if (days) {
-        result += days + "д ";
-      }
-      if (hours) {
-        result += hours + "ч ";
-      }
-      if (minutes < 10) {
-        result += "0";
-      }
-      result += minutes + "м ";
-      if (seconds < 10) {
-        result += "0";
-      }
-      result += seconds + "с";
-      return result;
     },
 
     loadAlert(fileName) {

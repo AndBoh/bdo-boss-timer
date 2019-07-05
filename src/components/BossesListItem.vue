@@ -1,6 +1,6 @@
 <template>
   <div class="bosses-list-item">
-    {{bossName}} - {{bossRespawn}}
+    {{getBossById(bossId).bossName}} - {{getBossById(bossId).timeToRespawnAsString}}
     <on-off-switch 
     v-model="alertOn"
     @click.native.stop />
@@ -8,13 +8,13 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 import OnOffSwitch from "./OnOffSwitch.vue";
 
 export default {
   name: "BossesListItem",
-  props: ["bossId", "bossName", "bossRespawn"],
+  props: ["bossId"],
   components: {
     OnOffSwitch
   },
@@ -23,23 +23,38 @@ export default {
       alertOn: true
     };
   },
-  computed: {},
+  computed: {
+    ...mapState([
+      'bossShedule'
+    ])
+  },
   methods: {
     ...mapMutations([
       'SET_BOSS_ALERT'
     ]),
+    getBossById(bossId) {
+      return this.bossShedule.find((boss) => {
+        return boss.bossId === bossId;
+      })
+    },
     loadAlertState() {
       let loadedAlert = localStorage.getItem("alertBoss" + this.bossId);
       if (loadedAlert === "false") {
         this.alertOn = false;
-        this.SET_BOSS_ALERT({ bossId: this.bossId, alertOn: this.alertOn });
+        this.setBossAlert();
       }
+    },
+    saveAlertState() {
+      localStorage.setItem("alertBoss" + this.bossId, this.alertOn);
+    },
+    setBossAlert() {
+      this.SET_BOSS_ALERT({ bossId: this.bossId, alertOn: this.alertOn });
     }
   },
   watch: {
     alertOn: function(val) {
-      this.SET_BOSS_ALERT({bossId: this.bossId, alertOn: this.alertOn});
-      localStorage.setItem("alertBoss" + this.bossId, this.alertOn);
+      this.setBossAlert();
+      this.saveAlertState();
     }
   },
   mounted() {
