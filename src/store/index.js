@@ -77,7 +77,9 @@ export const store = new Vuex.Store({
       }
     },
     UPDATE_TIME(state) {
-      state.time = Date.now();
+      let date = new Date();
+      state.time = date.getTime();
+      state.time += (date.getTimezoneOffset()+180)*MS_Per_Minute;
     },
     SET_ACTIVE_BOSS_ID(state, id) {
       state.activeBossId = id;
@@ -130,7 +132,7 @@ export const store = new Vuex.Store({
                 },
                 {
                     day: 5,
-                    hour: 20,
+                    hour: 21,
                     min: 0
                 }
             ]
