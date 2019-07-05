@@ -71,7 +71,7 @@ export const store = new Vuex.Store({
            });
     },
     LOAD_MIN_BEFORE_ALERT(state) {
-      let min = localStorage.getItem('minBeforeAlert');
+      let min = +localStorage.getItem('minBeforeAlert');
       if (min) {
         state.minBeforeAlert = min;
       }
@@ -132,8 +132,8 @@ export const store = new Vuex.Store({
                 },
                 {
                     day: 5,
-                    hour: 21,
-                    min: 0
+                    hour: 20,
+                    min: 10
                 }
             ]
         }

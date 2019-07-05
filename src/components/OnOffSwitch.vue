@@ -7,7 +7,10 @@
         :checked="checked"
         @change="change($event)"
       />
-      <span class="onoffswitch-inner"></span>
+      <span class="switch-inner">
+        <span class="on-state">{{textOn}}</span>
+        <span class="off-state">{{textOff}}</span>
+      </span>
     </label>
   </div>
 </template>
@@ -22,6 +25,12 @@ export default {
   props: {
     checked: {
       default: false
+    },
+    textOn: {
+      default: "ON"
+    },
+    textOff: {
+      default: "OFF"
     }
   },
   data() {
@@ -53,19 +62,12 @@ export default {
   border: 2px solid #999999;
   border-radius: 20px;
 }
-.onoffswitch-inner {
-  display: block;
-  width: 200%;
-  margin-left: -100%;
-  transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before,
-.onoffswitch-inner:after {
+.on-state,
+.off-state {
   display: block;
   float: left;
-  width: 50%;
   height: 24px;
-  padding: 0;
+  width: 50%;
   line-height: 24px;
   font-size: 16px;
   color: white;
@@ -74,19 +76,19 @@ export default {
   box-sizing: border-box;
   text-align: center;
 }
-.onoffswitch-inner:before {
-  content: "🔊";
+.off-state {
+  background-color: #999;
+}
+.on-state {
   background-color: #34a7c1;
-  color: #ffffff;
 }
-.onoffswitch-inner:after {
-  content: "🔇";
-  padding-top: 1px;
-  background-color: #eee;
-  color: #999999;
+.switch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
 }
-
-.onoffswitch-checkbox:checked + .onoffswitch-inner {
+.onoffswitch-checkbox:checked + .switch-inner {
   margin-left: 0;
 }
 </style>

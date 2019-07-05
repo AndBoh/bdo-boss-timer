@@ -153,7 +153,7 @@ export default {
       if (
         this.bossShedule.some(boss => {
           let t = boss.timeToRespawn - MS_Per_Minute * this.minBeforeAlert;
-          return t <= 1000 && t > 0 && boss.bossAlertOn;
+          return t <= 1000 && t > 0 && boss.alertOn;
         })
       ) {
         this.playAlert();
@@ -176,6 +176,7 @@ export default {
     this.loadBossShedule();
     this.LOAD_MIN_BEFORE_ALERT();
     this.UPDATE_TIME();
+    this.COUNT_TIME_TO_RESPAWN();
     this.loadAlert("assets/sound/sound.mp3");
     this.startTimer();
   }
