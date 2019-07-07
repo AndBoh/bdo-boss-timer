@@ -46,6 +46,7 @@ export default {
   background-color: #aaa;
   @media (max-width: 600px) {
     width: 100%;
+    height: 50%;
   }
 }
 .flip-list {

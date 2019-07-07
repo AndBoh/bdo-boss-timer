@@ -122,6 +122,7 @@ export default {
   background-color: #555;
   @media (max-width: 600px) {
     width: 100%;
+    height: 50%;
   }
 }
 </style>
