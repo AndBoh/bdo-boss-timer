@@ -1,0 +1,53 @@
+[
+    {
+      "bossId": 0,
+      "bossName": "Kzarka",
+      "inTable": true,
+      "bossRespawn": [
+        {
+          "day": 1,
+          "hour": 13,
+          "min": 0
+        },
+        {
+          "day": 3,
+          "hour": 20,
+          "min": 0
+        }
+      ]
+    },
+    {
+      "bossId": 1,
+      "bossName": "Offin",
+      "inTable": true,
+      "bossRespawn": [
+        {
+          "day": 2,
+          "hour": 20,
+          "min": 31
+        },
+        {
+          "day": 5,
+          "hour": 20,
+          "min": 10
+        }
+      ]
+    },
+    {
+        "bossId": 10,
+        "bossName": "Night",
+        "inTable": false,
+        "bossRespawn": [
+          {
+            "day": 3,
+            "hour": 20,
+            "min": 31
+          },
+          {
+            "day": 1,
+            "hour": 20,
+            "min": 10
+          }
+        ]
+      }
+  ]

@@ -3,14 +3,16 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const MS_Per_Minute = 1000*60;
-const MS_Per_Hour = MS_Per_Minute*60;
-const MS_Per_Day = MS_Per_Hour*24;
+const MS_Per_Minute = 1000 * 60;
+const MS_Per_Hour = MS_Per_Minute * 60;
+const MS_Per_Day = MS_Per_Hour * 24;
+
+const sheduleFile = require('../assets/bosses.json');
 
 function getWeekBegin(weekOffset = 0) {
   let today = new Date();
-  let weekBegin = new Date(today.getFullYear(),today.getMonth(),today.getDate()-((today.getDay() || 7)));
-  weekBegin.setDate(weekBegin.getDate()+7*weekOffset);
+  let weekBegin = new Date(today.getFullYear(), today.getMonth(), today.getDate() - ((today.getDay() || 7)));
+  weekBegin.setDate(weekBegin.getDate() + 7 * weekOffset);
   return weekBegin;
 }
 
@@ -45,9 +47,23 @@ export const store = new Vuex.Store({
     bossShedule: [],
     time: null,
     activeBossId: null,
-    minBeforeAlert: 1
+    minBeforeAlert: 0
   },
   getters: {
+    getBossesSortedByRespawn(state) {
+      return state.bossShedule.sort(function (boss1, boss2) {
+        if (boss1.timeToRespawn > boss2.timeToRespawn) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    },
+    getBossById: (state) => (bossId) => {
+      return state.bossShedule.find((boss) => {
+        return boss.bossId === bossId;
+      })
+    }
   },
   mutations: {
     SET_BOSS_SHEDULE(state, bossShedule) {
@@ -56,19 +72,20 @@ export const store = new Vuex.Store({
     COUNT_TIME_TO_RESPAWN(state) {
       let thisWeekBegin = getWeekBegin();
       let nextWeekBegin = getWeekBegin(1);
-           state.bossShedule.forEach((boss, index) => {
-               let bossRespawns = [];
-               boss.bossRespawn.forEach(resp => {
-                   bossRespawns.push(+thisWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour+resp.min*MS_Per_Minute);
-                   bossRespawns.push(+nextWeekBegin+resp.day*MS_Per_Day+resp.hour*MS_Per_Hour+resp.min*MS_Per_Minute);
-               });
-               
-               bossRespawns = bossRespawns.filter((resp) => {
-                   return (resp > +state.time);
-               });
-               Vue.set(state.bossShedule[index],'timeToRespawn',Math.min(...bossRespawns)-state.time);
-               Vue.set(state.bossShedule[index],'timeToRespawnAsString',timeToString(Math.min(...bossRespawns)-state.time));
-           });
+      state.bossShedule.forEach((boss) => {
+        let bossRespawns = [];
+        boss.bossRespawn.forEach(resp => {
+          bossRespawns.push(+thisWeekBegin + resp.day * MS_Per_Day + resp.hour * MS_Per_Hour + resp.min * MS_Per_Minute);
+          bossRespawns.push(+nextWeekBegin + resp.day * MS_Per_Day + resp.hour * MS_Per_Hour + resp.min * MS_Per_Minute);
+        });
+
+        bossRespawns = bossRespawns.filter((resp) => {
+          return (resp > +state.time);
+        });
+
+        boss.timeToRespawn = Math.min(...bossRespawns) - state.time;
+        boss.timeToRespawnAsString = timeToString(Math.min(...bossRespawns) - state.time);
+      });
     },
     LOAD_MIN_BEFORE_ALERT(state) {
       let min = +localStorage.getItem('minBeforeAlert');
@@ -79,7 +96,7 @@ export const store = new Vuex.Store({
     UPDATE_TIME(state) {
       let date = new Date();
       state.time = date.getTime();
-      state.time += (date.getTimezoneOffset()+180)*MS_Per_Minute;
+      state.time += (date.getTimezoneOffset() + 180) * MS_Per_Minute;
     },
     SET_ACTIVE_BOSS_ID(state, id) {
       state.activeBossId = id;
@@ -98,47 +115,12 @@ export const store = new Vuex.Store({
   },
   actions: {
     loadBossShedule(context) {
-      let shedule 
-      // AJAX
-      shedule = [
-        {
-            bossId: 0,
-            bossName: 'Kzarka',
-            inTable: true,
-            alertOn: true,
-            bossRespawn: [
-                {
-                    day: 1,
-                    hour: 13,
-                    min: 0,
-                },
-                {
-                    day: 3,
-                    hour: 20,
-                    min: 0
-                }
-            ]
-        },
-        {
-            bossId: 1,
-            bossName: 'Offin',
-            inTable: true,
-            alertOn: true,
-            bossRespawn: [
-                {
-                    day: 2,
-                    hour: 20,
-                    min: 31
-                },
-                {
-                    day: 5,
-                    hour: 20,
-                    min: 10
-                }
-            ]
-        }
-    ];
-      context.commit('SET_BOSS_SHEDULE', shedule)  
+      let shedule = sheduleFile;
+      shedule.forEach((boss) => {
+        Vue.set(boss, 'timeToRespawn', 0);
+        Vue.set(boss, 'timeToRespawnAsString', '');
+      });
+      context.commit('SET_BOSS_SHEDULE', shedule);
     }
   },
   modules: {

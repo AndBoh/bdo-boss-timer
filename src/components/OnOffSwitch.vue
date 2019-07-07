@@ -8,8 +8,8 @@
         @change="change($event)"
       />
       <span class="switch-inner">
-        <span class="on-state">{{textOn}}</span>
-        <span class="off-state">{{textOff}}</span>
+        <span class="on-state" v-html="textOn"></span>
+        <span class="off-state" v-html="textOff"></span>
       </span>
     </label>
   </div>

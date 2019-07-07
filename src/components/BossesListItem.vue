@@ -1,20 +1,24 @@
 <template>
   <div class="bosses-list-item">
-    {{getBossById(bossId).bossName}} - {{getBossById(bossId).timeToRespawnAsString}}
-    <on-off-switch 
-    v-model="alertOn"
-    @click.native.stop />
+    <div class="boss-item-wrapper" v-if="bossId != undefined">
+      {{getBossById(bossId).bossName}} - {{getBossById(bossId).timeToRespawnAsString}}
+      <on-off-switch 
+        v-model="alertOn"
+        @click.native.stop />
+    </div>
+    <div class="custom-item-wrapper" v-else></div>
+    {{itemText}}
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 import OnOffSwitch from "./OnOffSwitch.vue";
 
 export default {
   name: "BossesListItem",
-  props: ["bossId"],
+  props: ["bossId","itemText","itemImg"],
   components: {
     OnOffSwitch
   },
@@ -24,19 +28,11 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'bossShedule'
-    ])
+    ...mapState(['bossShedule']),
+    ...mapGetters(['getBossById'])
   },
   methods: {
-    ...mapMutations([
-      'SET_BOSS_ALERT'
-    ]),
-    getBossById(bossId) {
-      return this.bossShedule.find((boss) => {
-        return boss.bossId === bossId;
-      })
-    },
+    ...mapMutations(['SET_BOSS_ALERT']),
     loadAlertState() {
       let loadedAlert = localStorage.getItem("alertBoss" + this.bossId);
       if (loadedAlert === "false") {
@@ -64,4 +60,8 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+.bosses-list-item {
+  border: 1px solid red;
+  cursor: pointer;
+}
 </style>
