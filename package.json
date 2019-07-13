@@ -1,7 +1,7 @@
 {
-  "name": "vue-app",
+  "name": "bdo-boss-timer",
   "version": "1.0.0",
-  "description": "Template for Vue+Vuex App",
+  "description": "BDO Boss Timer",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",

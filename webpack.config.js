@@ -96,11 +96,12 @@ let conf = {
         new HtmlWebpackPlugin({
             filename: './index.html',
             template: './src/html/index.html',
-            title: 'Vue Application',
+            favicon: './src/assets/img/favicon.png',
+            title: 'Black Desert Online Boss Timer',
             lang: 'ru',
-            description: '',
+            description: 'Таймер респауна боссов в Black Desert Online Russia',
             author: 'Andrey_Bokhan',
-            keywords: ''
+            keywords: 'BDO, Boss Timer, Таймер респа боссов'
         })
     ],
     
