@@ -1,7 +1,7 @@
 <template>
   <div class="bosses-list">
     <transition-group name="flip-list" class="flip-list" tag="div">
-      <bosses-list-item key="-1" @click.native="setActiveBossId(null)" itemText="Расписание респа" />
+      <bosses-list-item key="-1" @click.native="setActiveBossId(null)" itemText="Расписание" />
       <bosses-list-item
         v-for="boss in getBossesSortedByRespawn"
         :bossId="boss.bossId"
@@ -43,8 +43,8 @@ export default {
 .bosses-list {
   width: 35%;
   flex-grow: 1;
-  background-color: #aaa;
-  @media (max-width: 600px) {
+  padding: 15px 25px;
+  @media (max-width: $small-device-width) {
     width: 100%;
     height: 50%;
   }
@@ -54,6 +54,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  position: relative;
 }
 .flip-list-move {
   transition: transform 1s;

@@ -30,9 +30,22 @@ export default {
 
 <style lang='scss' scoped>
 .min-before-alert {
-  color: red;
+  padding: 0 5px;
+  button {
+    outline: none;
+    background-color: transparent;
+    border: 1px solid $light-color;
+    width: 25px;
+    height: 25px;
+    border-radius: 12px;
+    color: $light-color;
+    cursor: pointer;
+    &:hover {
+      border-color: $accent-color;
+    }
+  }
 }
 .minute-value {
-  color: red;
+  color: $accent-color;
 }
 </style>

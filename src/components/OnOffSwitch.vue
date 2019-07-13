@@ -51,6 +51,7 @@ export default {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+  opacity: 0.7;
 }
 .onoffswitch-checkbox {
   display: none;
@@ -59,7 +60,7 @@ export default {
   display: block;
   overflow: hidden;
   cursor: pointer;
-  border: 2px solid #999999;
+  border: 2px solid $light-color;
   border-radius: 20px;
 }
 .on-state,
@@ -70,17 +71,17 @@ export default {
   width: 50%;
   line-height: 24px;
   font-size: 16px;
-  color: white;
+  color: $main-font-color;
   font-family: Trebuchet, Arial, sans-serif;
   font-weight: bold;
   box-sizing: border-box;
   text-align: center;
 }
 .off-state {
-  background-color: #999;
+  background-color: $light-color;
 }
 .on-state {
-  background-color: #34a7c1;
+  background-color: $dark-color;
 }
 .switch-inner {
   display: block;

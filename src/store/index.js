@@ -35,10 +35,12 @@ function timeToString(time) {
     result += "0";
   }
   result += minutes + "м ";
-  if (seconds < 10) {
-    result += "0";
+  if (!days && !hours) {
+    if (seconds < 10) {
+      result += "0";
+    }
+    result += seconds + "с";
   }
-  result += seconds + "с";
   return result;
 }
 
@@ -52,7 +54,7 @@ export const store = new Vuex.Store({
   getters: {
     getBossesSortedByRespawn(state) {
       return state.bossShedule.sort(function (boss1, boss2) {
-        if (boss1.timeToRespawn > boss2.timeToRespawn) {
+        if (boss1.timeToRespawn >= boss2.timeToRespawn) {
           return 1;
         } else {
           return -1;

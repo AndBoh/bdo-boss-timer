@@ -31,16 +31,18 @@ export default {
 
 <style lang='scss' scoped>
 .btn-scroll-up {
+  font-size: 3rem;
   height: 80px;
   width: 80px;
-  border-radius: 30px;
-  background-color: #aaa;
+  border-radius: 40px;
+  background-color: $light-color;
   position: fixed;
   bottom: 50px;
-  right: 20px;
+  right: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  opacity: 0.4;
 }
 </style>
