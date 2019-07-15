@@ -66,7 +66,7 @@ export default {
 <style lang='scss' scoped>
 .bosses-list-item {
   background: rgba(0, 0, 0, 0.2);
-  height: 7%;
+  height: 6vh;
   font-size: 0.8rem;
   position: relative;
   border-radius: 10px;
@@ -84,6 +84,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   padding: 0 25px;
 }
 .custom-item-wrapper {
