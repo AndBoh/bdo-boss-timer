@@ -210,7 +210,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   .boss-pic {
-    height: 30vh;
+    height: 30%;
     opacity: 0.9;
   }
   .boss-name {

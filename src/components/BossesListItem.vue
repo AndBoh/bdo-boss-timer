@@ -66,7 +66,7 @@ export default {
 <style lang='scss' scoped>
 .bosses-list-item {
   background: rgba(0, 0, 0, 0.2);
-  height: 6vh;
+  height: 7%;
   font-size: 0.8rem;
   position: relative;
   border-radius: 10px;
