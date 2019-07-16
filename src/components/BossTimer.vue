@@ -133,16 +133,6 @@ export default {
   background-image: url("../assets/img/bg.jpg");
   background-size: cover;
   background-position: center;
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: black;
-    opacity: 0.3;
-  }
   @media (max-width: $small-device-width) {
     height: 200vh;
   }
@@ -212,7 +202,7 @@ export default {
   align-items: center;
   justify-content: space-around;
   .boss-pic {
-    height: 30%;
+    height: 30vh;
     opacity: 0.9;
   }
   .boss-name {
