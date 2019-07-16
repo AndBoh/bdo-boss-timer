@@ -109,11 +109,18 @@ export default {
 
     playAlert() {
       this.alert.play();
+    },
+    getScreenH() {
+      let h = window.innerHeight;
+      document.documentElement.style.setProperty('--screenH',h+'px');
     }
   },
   watch: {},
-  beforeMount() {},
+  beforeMount() {
+    window.addEventListener('resize', this.getScreenH);
+  },
   mounted() {
+    this.getScreenH();
     this.loadBossShedule();
     this.UPDATE_TIME();
     this.COUNT_TIME_TO_RESPAWN();
@@ -126,7 +133,7 @@ export default {
 <style lang='scss' scoped>
 .boss-timer {
   width: 100vw;
-  height: 100vh;
+  height: var(--screenH);
   display: flex;
   flex-direction: column;
   color: $main-font-color;
@@ -134,7 +141,7 @@ export default {
   background-size: cover;
   background-position: center;
   @media (max-width: $small-device-width) {
-    height: 200vh;
+    height: calc(var(--screenH)*2);
   }
 }
 .header {
@@ -178,6 +185,7 @@ export default {
   flex-grow: 1;
   display: flex;
   position: relative;
+  height: 100%;
   @media (max-width: $small-device-width) {
     flex-direction: column;
   }
@@ -196,7 +204,7 @@ export default {
   }
 }
 .boss-info {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

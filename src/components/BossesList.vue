@@ -44,6 +44,7 @@ export default {
   width: 35%;
   flex-grow: 1;
   padding: 15px 25px;
+  height: 100%;
   @media (max-width: $small-device-width) {
     width: 100%;
     height: 50%;
