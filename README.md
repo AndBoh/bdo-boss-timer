@@ -1,7 +1,7 @@
 # BDO Boss Timer
 ### Raid boss respawn timer for Black Desert Online Russia
 
-###### Technology stack
+**Technology stack**
 * HTML
 * CSS/SCSS
 * JS/Vue.js/Vuex
