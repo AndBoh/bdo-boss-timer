@@ -108,7 +108,9 @@ export default {
     },
 
     playAlert() {
-      this.alert.play();
+      this.alert.play().catch(() => {
+        alert('Нажмите ОК для включения звука');
+      })
     },
     getScreenH() {
       let h = window.innerHeight;
